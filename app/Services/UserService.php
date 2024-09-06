@@ -8,7 +8,7 @@ class UserService
     // get all users
     public function getAllUsers()
     {
-        return $users = User::all();   
+        return User::all();   
     }
 
     //create a new user

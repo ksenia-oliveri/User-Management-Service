@@ -18,7 +18,7 @@ class UserApiController extends Controller
 
     public function index()
     {
-        return response($this->userService->getAllUsers(), 200);
+        return response()->json($this->userService->getAllUsers(), 200);
     }
 
     public function store(Request $request)
@@ -26,6 +26,6 @@ class UserApiController extends Controller
         $name = $request->input('name');
         $email = $request->input('email');
 
-        return response($this->userService->createNewUser($name, $email), 201);
+        return response()->json($this->userService->createNewUser($name, $email), 201);
     }
 }
