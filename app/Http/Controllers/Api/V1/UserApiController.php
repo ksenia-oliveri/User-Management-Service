@@ -21,11 +21,13 @@ class UserApiController extends Controller
         return response()->json($this->userService->getAllUsers(), 200);
     }
 
+    public function show(Request $request)
+    {
+        return response()->json($this->userService->getUserById($request->input('id')), 200);
+    }
+
     public function store(Request $request)
     {   
-        $name = $request->input('name');
-        $email = $request->input('email');
-
-        return response()->json($this->userService->createNewUser($name, $email), 201);
+        return response()->json($this->userService->createNewUser($request->validated()), 201);
     }
 }

@@ -4,5 +4,8 @@ use App\Http\Controllers\Api\V1\UserApiController;
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('v1/users', [UserApiController::class, 'index']);
-Route::post('v1/create/user', [UserApiController::class, 'store']);
+Route::prefix('v1')->group(function() {
+    Route::get('/users', [UserApiController::class, 'index']);
+    Route::get('/users/user_id', [UserApiController::class, 'show']);
+    Route::post('/create/user', [UserApiController::class, 'store']);
+});
