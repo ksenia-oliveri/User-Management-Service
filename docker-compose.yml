@@ -1,0 +1,65 @@
+version: '3.8'
+services:
+  # Service A: User Management Service
+  user-management:
+    build:
+      context: ./User-Management-Service
+    container_name: user-management
+    ports:
+      - "8000:8000"
+    environment:
+      - DB_CONNECTION=mysql
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_DATABASE=User_Service_DB
+      - DB_USERNAME=root
+      - DB_PASSWORD=
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      - laravel
+
+  # Service B: Task Management Service
+  task-management:
+    build:
+      context: ./Task-Management-Service
+    container_name: task-management
+    ports:
+      - "8001:8001"
+    environment:
+      - DB_CONNECTION=mysql
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_DATABASE=Task_Service_DB
+      - DB_USERNAME=root
+      - DB_PASSWORD=
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      - laravel
+
+  # MySQL для обоих сервисов
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    networks:
+      - laravel
+
+  # Redis для кэширования и очередей
+  redis:
+    image: redis:alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - laravel
+
+networks:
+  laravel:
+    driver: bridge
