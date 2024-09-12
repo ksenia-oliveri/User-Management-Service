@@ -6,7 +6,7 @@ use App\Events\UserCreated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreRequest;
 use App\Services\UserService;
-use Illuminate\Http\Request;
+
 
 
 class UserApiController extends Controller
@@ -35,6 +35,7 @@ class UserApiController extends Controller
     public function store(StoreRequest $request)
     {   
         $user = $this->userService->createNewUser($request->validated());
+        
         event(new UserCreated($user));
         return response($user, 201);
     }
