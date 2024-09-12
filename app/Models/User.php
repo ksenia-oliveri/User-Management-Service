@@ -18,7 +18,6 @@ use Illuminate\Database\Eloquent\Model;
 class User extends Model
 {
     use HasFactory;
-    use HasUuids;
 
     protected $table = 'users';
     protected $guarded = false;

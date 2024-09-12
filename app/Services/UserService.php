@@ -24,4 +24,16 @@ class UserService
     {
         return User::create($data);     
     }
+
+    //update the user 
+
+    public function updateUser(int $id, array $user)
+    {
+        return User::find($id)->update($user);
+    }
+    //delete the user
+    public function deleteUser(int $id)
+    {
+        return User::destroy($id);
+    }
 }
