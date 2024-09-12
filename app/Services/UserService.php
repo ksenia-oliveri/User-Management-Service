@@ -8,13 +8,32 @@ class UserService
     // get all users
     public function getAllUsers()
     {
-        return User::all();   
+        return User::select('name')->get();   
+    }
+
+    // get a user by id
+
+    public function getUserById(int $id)
+    {
+        return User::find($id);
     }
 
     //create a new user
 
-    public function createNewUser($name, $email)
+    public function createNewUser(array $data)
     {
-        return User::create(['name' => $name, 'email' => $email, 'created_at' => now(), 'updated_at' => now()]);     
+        return User::create($data);     
+    }
+
+    //update the user 
+
+    public function updateUser(int $id, array $user)
+    {
+        return User::find($id)->update($user);
+    }
+    //delete the user
+    public function deleteUser(int $id)
+    {
+        return User::destroy($id);
     }
 }
