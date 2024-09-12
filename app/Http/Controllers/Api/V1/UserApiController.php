@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Events\UserCreated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreRequest;
 use App\Services\UserService;
-use Illuminate\Http\Request;
+
 
 
 class UserApiController extends Controller
@@ -22,14 +23,21 @@ class UserApiController extends Controller
         return response($this->userService->getAllUsers(), 200);
     }
 
-    public function show(Request $request)
+    public function show(int $id)
     {
-        return response($this->userService->getUserById($request->input('id')), 200);
+        $user = $this->userService->getUserById($id);
+        if(!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+        return response($user, 200);
     }
 
     public function store(StoreRequest $request)
     {   
-        return response($this->userService->createNewUser($request->validated()), 201);
+        $user = $this->userService->createNewUser($request->validated());
+        
+        event(new UserCreated($user));
+        return response($user, 201);
     }
 
     public function update(int $id, StoreRequest $request)
