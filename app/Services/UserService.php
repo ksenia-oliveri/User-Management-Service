@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Services;
+use App\Events\UserCreated;
 use App\Models\User;
 
 class UserService
@@ -8,7 +9,9 @@ class UserService
     // get all users
     public function getAllUsers()
     {
-        return User::select('name')->get();   
+        $users = User::select('id','name')->get(); 
+        
+        return $users;
     }
 
     // get a user by id
@@ -16,13 +19,15 @@ class UserService
     public function getUserById(int $id)
     {
         return User::find($id);
+        
     }
 
     //create a new user
 
     public function createNewUser(array $data)
     {
-        return User::create($data);     
+        return User::create($data);
+        
     }
 
     //update the user 
