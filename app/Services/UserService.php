@@ -3,15 +3,15 @@
 namespace App\Services;
 use App\Models\User;
 use Cache;
+use Illuminate\Database\Eloquent\Collection;
 
 class UserService
 {
     // get all users
-    public function getAllUsers()
+    public function getAllUsers(): mixed
     {
-       
-        $users = Cache::remember('users:all', 3000,  function() {
-            return User::get();
+        $users = Cache::remember('users:', 3000,  function(): Collection {
+            return User::all();
         });
         return $users;
     }
@@ -20,32 +20,30 @@ class UserService
 
     public function getUserById(int $id)
     {   
-        return Cache::get('users:' . $id);
-       
+        return User::find($id); 
     }
 
     //create a new user
 
     public function createNewUser(array $data)
     {
-        Cache::forget('users:all');
-        $user = User::create($data);
-        return $user;
-        
+        return User::create($data);      
     }
 
     //update the user 
 
-    public function updateUser(int $id, array $user)
+    public function updateUser(int $id, array $user): mixed
     {   
-        Cache::forget('users:all');
-        $user = User::find($id)->update($user);  
+        $user = User::find($id)->update($user); 
+        Cache::forget('users:' . $id); 
+        Cache::put('users:' . $id, $user);
+    
         return $user;
     }
     //delete the user
-    public function deleteUser(int $id)
+    public function deleteUser(int $id): void  
     {
-        Cache::forget('users:all');
-        return User::destroy($id);
+        User::destroy($id);
+        Cache::forget('users:' . $id); 
     }
 }
